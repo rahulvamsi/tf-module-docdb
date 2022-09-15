@@ -39,8 +39,8 @@ resource "aws_security_group" "main" {
 
   ingress {
     description = "DOCUMENTDB"
-    from_port   = 27107
-    to_port     = 27107
+    from_port   = 27017
+    to_port     = 27017
     protocol    = "tcp"
     cidr_blocks = [var.vpc_cidr_block, var.WORKSTATION_IP]
   }
