@@ -58,9 +58,20 @@ cd /tmp
 unzip -o mongodb.zip
 cd mongodb-main
 curl -L -O https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem
-mongo --ssl --host ${aws_docdb_cluster.main.endpoint}:27017 --sslCAFile rds-combined-ca-bundle.pem --username ${local.username} --password ${local.password} <catalogue.js 
+mongo --ssl --host ${aws_docdb_cluster.main.endpoint}:27017 --sslCAFile rds-combined-ca-bundle.pem --username ${local.username} --password ${local.password} <catalogue.js
 mongo --ssl --host ${aws_docdb_cluster.main.endpoint}:27017 --sslCAFile rds-combined-ca-bundle.pem --username ${local.username} --password ${local.password} <users.js
 EOF
   }
 }
 
+resource "aws_ssm_parameter" "docdb-url-catalogue" {
+  name  = "mutable.docdb.catalogue.{{ENV}}.MONGO_URL"
+  type  = "String"
+  value = "mongodb://${local.username}:${local.password}@${aws_docdb_cluster.main.endpoint}:27017/catalogue?tls=true&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false"
+}
+
+resource "aws_ssm_parameter" "docdb-url-users" {
+  name  = "mutable.docdb.user.{{ENV}}.MONGO_URL"
+  type  = "String"
+  value = "mongodb://${local.username}:${local.password}@${aws_docdb_cluster.main.endpoint}:27017/users?tls=true&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false"
+}
