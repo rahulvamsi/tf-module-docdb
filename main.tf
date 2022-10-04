@@ -53,7 +53,7 @@ resource "null_resource" "mongodb-schema-apply" {
   depends_on = [aws_docdb_cluster.main, aws_docdb_cluster_instance.cluster_instances]
   provisioner "local-exec" {
     command = <<EOF
-curl -s -L -o /tmp/mongodb.zip "https://github.com/roboshop-devops-project/mongodb/archive/main.zip"
+sudo curl -s -L -o /tmp/mongodb.zip "https://github.com/roboshop-devops-project/mongodb/archive/main.zip"
 cd /tmp
 unzip -o mongodb.zip
 cd mongodb-main
